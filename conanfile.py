@@ -35,18 +35,23 @@ conan_basic_setup()""")
         cmake_flags = [shared, namespace_versioning, "-DCMAKE_INSTALL_PREFIX=install"]
 
         self.run('cmake ilmbase-%s %s %s' % (self.version, ' '.join(cmake_flags), cmake.command_line))
-        self.run("cmake --build . --target install %s" % cmake.build_config)
+        self.run("cmake --build . %s" % cmake.build_config)
 
     def package(self):
-        self.copy("*.h", dst="include", src="install/include", keep_path=True)
+        self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/Half" % self.version, keep_path=False)
+        self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/Iex" % self.version, keep_path=False)
+        self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/IexMath" % self.version, keep_path=False)
+        self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/IlmThread" % self.version, keep_path=False)
+        self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/Imath" % self.version, keep_path=False)
+        self.copy("IlmBaseConfig.h", dst="include/OpenEXR", src="config", keep_path=False)
 
-        self.copy("*.lib", dst="lib", src="install/lib", keep_path=False)
-        self.copy("*.a", dst="lib", src="install/lib", keep_path=False)
-        self.copy("*.so", dst="lib", src="install/lib", keep_path=False)
-        self.copy("*.so.*", dst="lib", src="install/lib", keep_path=False)
-        self.copy("*.dylib*", dst="lib", src="install/lib", keep_path=False)
+        self.copy("*.lib", dst="lib", src="lib", keep_path=False)
+        self.copy("*.a", dst="lib", src="lib", keep_path=False)
+        self.copy("*.so", dst="lib", src="lib", keep_path=False)
+        self.copy("*.so.*", dst="lib", src="lib", keep_path=False)
+        self.copy("*.dylib*", dst="lib", src="lib", keep_path=False)
 
-        self.copy("*.dll", dst="bin", src="install/lib", keep_path=False)
+        self.copy("*.dll", dst="bin", src="bin", keep_path=False)
 
     def package_info(self):
         parsed_version = self.version.split('.')
