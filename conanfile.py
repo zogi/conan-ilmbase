@@ -57,7 +57,7 @@ conan_basic_setup()""")
         parsed_version = self.version.split('.')
         version_suffix = "-%s_%s" % (parsed_version[0], parsed_version[1]) if self.options.namespace_versioning else ""
 
-        if self.options.shared:
+        if self.options.shared and self.settings.os == "Windows":
             self.cpp_info.defines.append("OPENEXR_DLL")
         self.cpp_info.bindirs = ["bin"]
         self.cpp_info.includedirs = ['include', 'include/OpenEXR']
