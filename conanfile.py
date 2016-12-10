@@ -45,11 +45,11 @@ conan_basic_setup()""")
         self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/Imath" % self.version, keep_path=False)
         self.copy("IlmBaseConfig.h", dst="include/OpenEXR", src="config", keep_path=False)
 
-        self.copy("*.lib", dst="lib", src="lib", keep_path=False)
-        self.copy("*.a", dst="lib", src="lib", keep_path=False)
-        self.copy("*.so", dst="lib", src="lib", keep_path=False)
-        self.copy("*.so.*", dst="lib", src="lib", keep_path=False)
-        self.copy("*.dylib*", dst="lib", src="lib", keep_path=False)
+        self.copy("*.lib", dst="lib", src=".", keep_path=False)
+        self.copy("*.a", dst="lib", src=".", keep_path=False)
+        self.copy("*.so", dst="lib", src=".", keep_path=False)
+        self.copy("*.so.*", dst="lib", src=".", keep_path=False)
+        self.copy("*.dylib*", dst="lib", src=".", keep_path=False)
 
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
 
