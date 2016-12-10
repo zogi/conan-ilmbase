@@ -57,6 +57,8 @@ conan_basic_setup()""")
         parsed_version = self.version.split('.')
         version_suffix = "-%s_%s" % (parsed_version[0], parsed_version[1]) if self.options.namespace_versioning else ""
 
+        if self.options.shared:
+            self.cpp_info.defines.append("OPENEXR_DLL")
         self.cpp_info.bindirs = ["bin"]
         self.cpp_info.includedirs = ['include', 'include/OpenEXR']
         self.cpp_info.libs = ["Imath" + version_suffix, "IexMath" + version_suffix, "Half", "Iex" + version_suffix,
