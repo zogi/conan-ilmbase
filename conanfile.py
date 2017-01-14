@@ -12,6 +12,7 @@ class IlmBaseConan(ConanFile):
     default_options = "shared=True", "namespace_versioning=True"
     generators = "cmake"
     build_policy = "missing"
+    exports = "FindIlmBase.cmake"
 
     def source(self):
         tools.download("http://download.savannah.nongnu.org/releases/openexr/ilmbase-%s.tar.gz" % self.version,
@@ -52,6 +53,8 @@ conan_basic_setup()""")
         self.copy("*.dylib*", dst="lib", src=".", keep_path=False)
 
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
+
+        self.copy("FindIlmBase.cmake", src=".", dst=".")
 
     def package_info(self):
         parsed_version = self.version.split('.')
