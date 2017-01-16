@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 2.8)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 CONAN_BASIC_SETUP()
 
+find_package(IlmBase REQUIRED)
+
 ADD_EXECUTABLE(testPackage main.cpp testMatrix.cpp)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CONAN_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(testPackage ${CONAN_LIBS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${ILMBASE_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(testPackage ${ILMBASE_LIBRARIES})
