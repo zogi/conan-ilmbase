@@ -10,7 +10,7 @@ environment:
     CONAN_LOGIN_USERNAME: "Mikayex"
     CONAN_CHANNEL: "stable"
     VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
-    CONAN_UPLOAD: "https://github.com/Mikayex/conan-ilmbase"
+    CONAN_UPLOAD: "https://api.bintray.com/conan/mikayex/conan-packages"
 
     matrix:
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015

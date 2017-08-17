@@ -5,7 +5,7 @@ env:
      - CONAN_USERNAME: "Mikayex"
      - CONAN_LOGIN_USERNAME: "Mikayex"
      - CONAN_CHANNEL: "stable"
-     - CONAN_UPLOAD: "https://github.com/Mikayex/conan-ilmbase"
+     - CONAN_UPLOAD: "https://api.bintray.com/conan/mikayex/conan-packages"
 
 linux: &linux
    os: linux
