@@ -4,15 +4,24 @@ import os
 
 class IlmBaseConan(ConanFile):
     name = "IlmBase"
+    description = "IlmBase is a component of OpenEXR. OpenEXR is a high dynamic-range (HDR) image file format developed by Industrial Light & Magic for use in computer imaging applications."
     version = "2.2.0"
     license = "BSD"
     url = "https://github.com/Mikayex/conan-ilmbase.git"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "namespace_versioning": [True, False]}
-    default_options = "shared=True", "namespace_versioning=True"
+    options = {"shared": [True, False], "namespace_versioning": [True, False], "fPIC": [True, False]}
+    default_options = "shared=True", "namespace_versioning=True", "fPIC=False"
     generators = "cmake"
     build_policy = "missing"
     exports = "FindIlmBase.cmake"
+
+    def config_options(self):
+        if self.settings.os == "Windows":
+            self.options.remove("fPIC")
+
+    def configure(self):
+        if "fPIC" in self.options.fields and self.options.shared:
+            self.options.fPIC = True
 
     def source(self):
         tools.download("http://download.savannah.nongnu.org/releases/openexr/ilmbase-%s.tar.gz" % self.version,
@@ -30,13 +39,18 @@ conan_basic_setup()""")
         tools.replace_in_file("ilmbase-%s/CMakeLists.txt" % self.version, "ADD_SUBDIRECTORY ( ImathTest )", "")
 
     def build(self):
-        cmake = CMake(self.settings)
-        shared = "-DBUILD_SHARED_LIBS=ON" if self.options.shared else "-DBUILD_SHARED_LIBS=OFF"
-        namespace_versioning = "-DNAMESPACE_VERSIONING=ON" if self.options.namespace_versioning else "-DNAMESPACE_VERSIONING=OFF"
-        cmake_flags = [shared, namespace_versioning, "-DCMAKE_INSTALL_PREFIX=install"]
+        cmake = CMake(self)
+        cmake.definitions.update(
+            { "BUILD_SHARED_LIBS": self.options.shared
+            , "NAMESPACE_VERSIONING": self.options.namespace_versioning
+            , "CMAKE_INSTALL_PREFIX": "install"
+            })
+        if "fPIC" in self.options.fields:
+            cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.options.fPIC
 
-        self.run('cmake ilmbase-%s %s %s' % (self.version, ' '.join(cmake_flags), cmake.command_line))
-        self.run("cmake --build . %s" % cmake.build_config)
+        src_dir = "ilmbase-%s" % self.version
+        cmake.configure(source_dir=src_dir)
+        cmake.build()
 
     def package(self):
         self.copy("*.h", dst="include/OpenEXR", src="ilmbase-%s/Half" % self.version, keep_path=False)
@@ -55,6 +69,7 @@ conan_basic_setup()""")
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
 
         self.copy("FindIlmBase.cmake", src=".", dst=".")
+        self.copy("license*", dst="licenses", src="ilmbase-%s" % self.version, ignore_case=True, keep_path=False)
 
     def package_info(self):
         parsed_version = self.version.split('.')
