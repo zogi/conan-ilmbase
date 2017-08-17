@@ -69,6 +69,7 @@ conan_basic_setup()""")
         self.copy("*.dll", dst="bin", src="bin", keep_path=False)
 
         self.copy("FindIlmBase.cmake", src=".", dst=".")
+        self.copy("license*", dst="licenses", src="ilmbase-%s" % self.version, ignore_case=True, keep_path=False)
 
     def package_info(self):
         parsed_version = self.version.split('.')
