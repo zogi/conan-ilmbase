@@ -84,3 +84,4 @@ conan_basic_setup()""")
 
         if not self.settings.os == "Windows":
             self.cpp_info.cppflags = ["-pthread"]
+            self.cpp_info.sharedlinkflags = ["-pthread"]
